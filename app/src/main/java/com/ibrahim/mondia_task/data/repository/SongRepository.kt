@@ -1,8 +1,7 @@
 package com.ibrahim.mondia_task.data.repository
 
-import com.ibrahim.mondia_task.data.model.ResponseType
 import com.ibrahim.mondia_task.data.model.Song
-import com.ibrahim.mondia_task.data.model.Test
+import com.ibrahim.mondia_task.data.model.SongsResponse
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.InputStream
@@ -14,8 +13,8 @@ import kotlin.concurrent.thread
 class SongRepository {
 
 
-    fun getSongsList(): NetworkResponse<Test> {
-        val executer = Executer<Test>(Test::class.java)
+    fun getSongsList(): NetworkResponse<SongsResponse> {
+        val executer = Executer(SongsResponse::class.java)
 
         val networkResponse = executer.test()
         val response = NetworkResponse<Song>()
@@ -29,7 +28,7 @@ class SongRepository {
         return networkResponse
     }
 
-    class Executer<T: ResponseType>(val type: Class<T>) {
+    class Executer<T>(val type: Class<T>) {
 
 
         fun test(): NetworkResponse<T> {
@@ -54,9 +53,7 @@ class SongRepository {
                     responseCallBack.error.invoke(e)
                     e.printStackTrace()
                 } finally {
-                    if (urlConnection != null) {
-                        urlConnection.disconnect()
-                    }
+                    urlConnection?.disconnect()
                 }
             }
 
@@ -65,7 +62,7 @@ class SongRepository {
 
     }
 
-    data class NetworkResponse<T: Any>(
+    data class NetworkResponse<T>(
         val sucess: SuccessResponseCallBack<T> = SuccessResponseCallBack(),
         val error: ErrorResponseCallBack = ErrorResponseCallBack()
     ) {
@@ -114,11 +111,11 @@ class SongRepository {
 
 private fun <T> String.mapToType(klass: Any): T {
 
-    klass == Test::class.java
-    klass is Test
+    klass == SongsResponse::class.java
+    klass is SongsResponse
 
     return when(klass){
-        Test::class.java -> {
+        SongsResponse::class.java -> {
             mapToSongs(this) as T
         }
         else -> {
@@ -128,7 +125,7 @@ private fun <T> String.mapToType(klass: Any): T {
 }
 
 fun <T> mapToSongs(it: String): T {
-    val songsList = Test()
+    val songsList = SongsResponse()
     val jsonArray = JSONArray(it)
     for (position in 0..jsonArray.length()){
         (jsonArray.get(0) as JSONObject).apply {
@@ -145,11 +142,4 @@ fun <T> mapToSongs(it: String): T {
 
     return songsList as T
 
-}
-
-
-inline fun <reified T> checkType(obj: Object, contract: T) {
-    if (obj is T) {
-        // object implements the contract type T
-    }
 }

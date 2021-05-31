@@ -5,10 +5,4 @@ data class Song(
     val name: String = "",
     val albumName: String = "",
     val cover: String = ""
-): ResponseType
-
-
-
-class Test : ArrayList<Song>(), ResponseType
-
-interface ResponseType
+)

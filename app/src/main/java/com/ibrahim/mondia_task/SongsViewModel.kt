@@ -9,9 +9,8 @@ class SongsViewModel: ViewModel(){
     val songRepository = SongRepository()
 
     fun fetchSongsList(query: String){
-        val v = songRepository.getSongsList()
-
-        v.register( {
+        songRepository.getSongsList()
+        .register( {
             it
         },{
             it
