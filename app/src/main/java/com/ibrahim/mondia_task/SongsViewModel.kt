@@ -9,6 +9,7 @@ class SongsViewModel: ViewModel(){
     val songRepository = SongRepository()
 
     fun fetchSongsList(query: String){
+        getToken()
         songRepository.getSongsList()
         .register( {
             it
@@ -16,6 +17,16 @@ class SongsViewModel: ViewModel(){
             it
         })
 
+    }
+
+
+    fun getToken(){
+        songRepository.getToken()
+            .register( {
+                it
+            },{
+                it
+            })
     }
 
 
