@@ -2,10 +2,14 @@ package com.ibrahim.mondia_task.data.repository
 
 import com.ibrahim.mondia_task.data.mapper.mapToType
 import com.ibrahim.mondia_task.data.model.NetworkResponseModel
+import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.Callable
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 import kotlin.concurrent.thread
 
 
@@ -26,8 +30,8 @@ class Executer<T: NetworkResponseModel>(
 
     fun test(): NetworkResponse<T> {
         val responseCallBack = NetworkResponse<T>()
-
-        thread {
+        val service = Executors.newCachedThreadPool()
+        val future: Future<*> = service.submit {
             addQueryParams(queryParams)
 
             try {
@@ -41,12 +45,18 @@ class Executer<T: NetworkResponseModel>(
                 val isw = InputStreamReader(`in`)
                 val data = isw.readText()
                 responseCallBack.sucess.invoke(data.mapToType(type) as T)
-            } catch (e: Exception) {
+
+            }catch (e: Exception) {
+                if (e.message != "thread interrupted")
                 responseCallBack.error.invoke(e)
-                e.printStackTrace()
             } finally {
                 urlConnection?.disconnect()
             }
+
+        }
+
+        responseCallBack.cancelCall = {
+            future.cancel(true)
         }
 
         return responseCallBack
