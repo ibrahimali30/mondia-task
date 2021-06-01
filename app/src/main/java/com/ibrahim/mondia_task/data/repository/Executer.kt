@@ -1,5 +1,6 @@
 package com.ibrahim.mondia_task.data.repository
 
+import com.ibrahim.mondia_task.data.mapper.mapToType
 import com.ibrahim.mondia_task.data.model.NetworkResponseModel
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -35,10 +36,6 @@ class Executer<T: NetworkResponseModel>(
                 urlConnection = url.openConnection() as HttpURLConnection
                 addHeaderParams(headers)
                 urlConnection.requestMethod = method
-
-                urlConnection.setRequestProperty("authorization", "Bearer Cbfb4f2b3-4500-4be4-a075-9c9330e578b0")
-                urlConnection.setRequestProperty("cache-control", "no-cache")
-                urlConnection.setRequestProperty("postman-token", "140c3de3-edfe-2c53-525e-fb11b519de59")
 
                 val `in`: InputStream = urlConnection.getInputStream()
                 val isw = InputStreamReader(`in`)

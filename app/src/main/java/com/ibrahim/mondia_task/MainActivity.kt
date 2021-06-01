@@ -1,6 +1,9 @@
 package com.ibrahim.mondia_task
 
+import android.R.attr.src
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,11 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ibrahim.mondia_task.data.model.Song
+import com.ibrahim.mondia_task.data.network.ImageLoader
 import com.ibrahim.mondia_task.view.SongsAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_error_view.*
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.concurrent.thread
@@ -117,35 +119,8 @@ class MainActivity : AppCompatActivity() {
 }
 
 
-fun test(){
-    thread {
-        val requestUrl = "https://staging-gateway.mondiamedia.com/v2/api/sayt/flat?query=tem"
-
-
-
-        lateinit var url: URL
-        lateinit var urlConnection: HttpURLConnection
-        try {
-
-            url = URL(requestUrl)
-            urlConnection = url.openConnection() as HttpURLConnection
-            urlConnection.requestMethod = "GET"
-
-            urlConnection.setRequestProperty("authorization", "Bearer Cbfb4f2b3-4500-4be4-a075-9c9330e578b0")
-            urlConnection.setRequestProperty("cache-control", "no-cache")
-            urlConnection.setRequestProperty("postman-token", "140c3de3-edfe-2c53-525e-fb11b519de59")
-
-
-            val `in`: InputStream = urlConnection.getInputStream()
-            val isw = InputStreamReader(`in`)
-            val data = isw.readText()
-            data
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            urlConnection?.disconnect()
-        }
-    }
+fun MainActivity.test(){
+    
 
 }
 

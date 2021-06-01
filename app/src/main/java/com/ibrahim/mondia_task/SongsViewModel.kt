@@ -16,11 +16,15 @@ class SongsViewModel : ViewModel() {
     val songRepository = SongRepository()
 
     fun fetchSongsList(query: String) {
-        val v = Calendar.getInstance().timeInMillis
         if (query.length < 2 )return
+
+        screenState.postValue(ForecastScreenState.Loading)
+
+        val callTime = Calendar.getInstance().timeInMillis
+
         songRepository.getSongsList(query)
             .register({
-                Log.d("TAG", "fetchSongsList: ${Calendar.getInstance().timeInMillis - v}")
+                Log.d("TAG", "response time = ${Calendar.getInstance().timeInMillis - callTime}")
                 screenState.postValue(
                     ForecastScreenState.SuccessAPIResponse(it)
                 )

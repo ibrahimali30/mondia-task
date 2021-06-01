@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ibrahim.mondia_task.R
 import com.ibrahim.mondia_task.data.model.Song
+import com.ibrahim.mondia_task.data.network.ImageLoader
 import kotlinx.android.synthetic.main.song_forecast.view.*
 
 class SongsAdapter(
@@ -64,6 +65,7 @@ class SongsAdapter(
         fun bind(model: Song) {
             itemView.apply {
                 tvSongname.text = model.titel
+                ImageLoader.loadImage(iv, model.getCoverPath())
             }
 
         }

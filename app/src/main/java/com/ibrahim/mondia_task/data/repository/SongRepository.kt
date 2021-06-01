@@ -1,5 +1,6 @@
 package com.ibrahim.mondia_task.data.repository
 
+import com.ibrahim.mondia_task.base.Universals
 import com.ibrahim.mondia_task.data.model.NetworkResponseModel
 import com.ibrahim.mondia_task.data.model.Song
 import com.ibrahim.mondia_task.data.model.SongsResponse
@@ -15,9 +16,7 @@ class SongRepository {
             SongsResponse::class.java,
             hashMapOf(Pair("query", query)),
             hashMapOf(
-                Pair("Authorization","Bearer Cbfb4f2b3-4500-4be4-a075-9c9330e578b0"),
-                Pair("cache-control","no-cache"),
-                Pair("postman-token","140c3de3-edfe-2c53-525e-fb11b519de59")
+                Pair("Authorization","Bearer ${Universals.token}")
             )
         )
 
@@ -89,52 +88,3 @@ class SongRepository {
         }
     }
 
-
- fun <T: NetworkResponseModel>String.mapToType(klass: Class<T>): NetworkResponseModel {
-
-    return when(klass){
-        TokenResponse::class.java -> {
-            mapToTokenResponse(this)
-        }
-        SongsResponse::class.java -> {
-            mapToSongs(this)
-        }
-        else -> {
-            null as NetworkResponseModel
-        }
-    }
-}
-
-fun mapToTokenResponse(s: String): NetworkResponseModel {
-    JSONObject(s).apply {
-        val accessToken = getString("accessToken")
-        val tokenType = getString("tokenType")
-        val expiresIn = getLong("expiresIn")
-        return TokenResponse(accessToken, tokenType, expiresIn)
-    }
-
-}
-
-fun mapToSongs(it: String): SongsResponse {
-    val songsList = SongsResponse()
-    val jsonArray = JSONArray(it)
-    if (jsonArray.length() == 0) return songsList
-    for (position in 0..jsonArray.length()-1){
-        (jsonArray.get(position) as JSONObject).apply {
-
-            try {
-                val title = getString("title")
-                val name = getJSONObject("mainArtist").getString("name")
-                val album = getJSONObject("release").getString("title")
-                val cover = getJSONObject("cover").getString("medium")
-//            val v = getJSONArray("genres").toString(1)
-
-                songsList.add(Song(title, name, album))
-            }catch (e:java.lang.Exception){}
-
-        }
-    }
-
-    return songsList
-
-}
