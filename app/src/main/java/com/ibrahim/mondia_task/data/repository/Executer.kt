@@ -15,7 +15,7 @@ class Executer<T: NetworkResponseModel>(
     val path: String = "v2/api/sayt/flat",
     val method: String = "GET"
 ) {
-    val baseUrl = "http://staging-gateway.mondiamedia.com/"
+    val baseUrl = "https://staging-gateway.mondiamedia.com/"
 
 
     var requestUrl = baseUrl+path
@@ -36,6 +36,9 @@ class Executer<T: NetworkResponseModel>(
                 addHeaderParams(headers)
                 urlConnection.requestMethod = method
 
+                urlConnection.setRequestProperty("authorization", "Bearer Cbfb4f2b3-4500-4be4-a075-9c9330e578b0")
+                urlConnection.setRequestProperty("cache-control", "no-cache")
+                urlConnection.setRequestProperty("postman-token", "140c3de3-edfe-2c53-525e-fb11b519de59")
 
                 val `in`: InputStream = urlConnection.getInputStream()
                 val isw = InputStreamReader(`in`)
@@ -64,6 +67,6 @@ class Executer<T: NetworkResponseModel>(
         queryParams.forEach {
             requestUrl += "${it.key}=${it.value},"
         }
-        requestUrl.dropLast(1)
+        requestUrl = requestUrl.dropLast(1)
     }
 }

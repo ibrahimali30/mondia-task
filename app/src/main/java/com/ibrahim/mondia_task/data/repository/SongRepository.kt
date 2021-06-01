@@ -6,20 +6,19 @@ import com.ibrahim.mondia_task.data.model.SongsResponse
 import com.ibrahim.mondia_task.data.model.TokenResponse
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
-import kotlin.concurrent.thread
 
 class SongRepository {
 
 
-    fun getSongsList(): NetworkResponse<SongsResponse> {
+    fun getSongsList(query: String): NetworkResponse<SongsResponse> {
         val executer = Executer(
             SongsResponse::class.java,
-            hashMapOf(Pair("query","te")),
-            hashMapOf(Pair("Authorization","Bearer Cbfb4f2b3-4500-4be4-a075-9c9330e578b0"))
+            hashMapOf(Pair("query", query)),
+            hashMapOf(
+                Pair("Authorization","Bearer Cbfb4f2b3-4500-4be4-a075-9c9330e578b0"),
+                Pair("cache-control","no-cache"),
+                Pair("postman-token","140c3de3-edfe-2c53-525e-fb11b519de59")
+            )
         )
 
         val networkResponse = executer.test()
@@ -119,15 +118,19 @@ fun mapToTokenResponse(s: String): NetworkResponseModel {
 fun mapToSongs(it: String): SongsResponse {
     val songsList = SongsResponse()
     val jsonArray = JSONArray(it)
-    for (position in 0..jsonArray.length()){
-        (jsonArray.get(0) as JSONObject).apply {
-            val title = getString("title")
-            val name = getJSONObject("mainArtist").getString("name")
-            val album = getJSONObject("release").getString("title")
-            val cover = getJSONObject("cover").getString("medium")
-            val v = getJSONArray("genres").toString(1)
+    if (jsonArray.length() == 0) return songsList
+    for (position in 0..jsonArray.length()-1){
+        (jsonArray.get(position) as JSONObject).apply {
 
-            songsList.add(Song(title, name, album))
+            try {
+                val title = getString("title")
+                val name = getJSONObject("mainArtist").getString("name")
+                val album = getJSONObject("release").getString("title")
+                val cover = getJSONObject("cover").getString("medium")
+//            val v = getJSONArray("genres").toString(1)
+
+                songsList.add(Song(title, name, album))
+            }catch (e:java.lang.Exception){}
 
         }
     }

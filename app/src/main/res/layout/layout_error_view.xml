@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center|bottom"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="100dp">
+
+
+    <TextView
+        android:id="@+id/tvErrorMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Something went wrong"
+        android:textSize="28sp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="50dp"
+        android:layout_marginHorizontal="16dp"/>
+
+
+<Button
+    android:id="@+id/btRetry"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Retry"/>
+
+</LinearLayout>
