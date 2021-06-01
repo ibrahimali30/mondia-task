@@ -1,6 +1,6 @@
 package com.ibrahim.mondia_task.data.mapper
 
-import com.ibrahim.mondia_task.data.model.NetworkResponseModel
+
 import com.ibrahim.mondia_task.data.model.Song
 import com.ibrahim.mondia_task.data.model.SongsResponse
 import com.ibrahim.mondia_task.data.model.TokenResponse
@@ -9,16 +9,8 @@ import org.json.JSONObject
 import java.lang.Exception
 
 
-fun <T: NetworkResponseModel> String.mapToType(klass: Class<T>): NetworkResponseModel {
 
-    return when(klass){
-        TokenResponse::class.java -> mapToTokenResponse(this)
-        SongsResponse::class.java -> mapToSongs(this)
-        else -> throw Exception("not supported model class")
-    }
-}
-
-fun mapToTokenResponse(s: String): NetworkResponseModel {
+fun mapToTokenResponse(s: String): TokenResponse {
     JSONObject(s).apply {
         val accessToken = getString("accessToken")
         val tokenType = getString("tokenType")

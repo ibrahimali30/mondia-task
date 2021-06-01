@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ibrahim.mondia_task.R
 import com.ibrahim.mondia_task.data.model.Song
 import com.ibrahim.mondia_task.network.ImageLoader
-import kotlinx.android.synthetic.main.song_forecast.view.*
+import kotlinx.android.synthetic.main.item_song.view.*
 
 class SongsAdapter(
         val onAForecastItemClicked: (model: Song) -> Unit
@@ -33,7 +33,7 @@ class SongsAdapter(
         viewType: Int
     ): ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.song_forecast, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_song, parent, false)
         return ViewHolder(
             view
         )

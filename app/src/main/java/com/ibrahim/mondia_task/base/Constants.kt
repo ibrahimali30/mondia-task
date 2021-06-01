@@ -1,5 +1,5 @@
 package com.ibrahim.mondia_task.base
 
-object Universals{
+object Global{
     var token = ""
 }

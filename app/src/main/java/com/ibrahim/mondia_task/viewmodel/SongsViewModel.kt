@@ -3,7 +3,7 @@ package com.ibrahim.mondia_task.viewmodel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ibrahim.mondia_task.base.Universals
+import com.ibrahim.mondia_task.base.Global
 import com.ibrahim.mondia_task.data.model.Song
 import com.ibrahim.mondia_task.data.model.SongsResponse
 import com.ibrahim.mondia_task.network.response.NetworkResponse
@@ -51,7 +51,7 @@ class SongsViewModel : ViewModel() {
         songRepository.getToken()
             .registerCallBack(
                 onSuccess = {
-                    Universals.token = it.accessToken
+                    Global.token = it.accessToken
                     fetchSongsList("te")
                 },
                 onFailure = {

@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         initSearchView()
         initRecyclerView()
         songsViewModel.getToken()
-        test()
     }
 
     private fun observeScreenState() {
@@ -108,14 +107,5 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
-
     }
-
 }
-
-
-fun MainActivity.test(){
-
-
-}
-

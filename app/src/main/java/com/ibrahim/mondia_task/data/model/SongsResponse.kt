@@ -1,4 +1,4 @@
 package com.ibrahim.mondia_task.data.model
 
-class SongsResponse : ArrayList<Song>(), NetworkResponseModel
+class SongsResponse : ArrayList<Song>()
 

@@ -1,8 +1,8 @@
 package com.ibrahim.mondia_task.network.response
 
-import com.ibrahim.mondia_task.data.model.NetworkResponseModel
 
-data class NetworkResponse<T: NetworkResponseModel>(
+
+data class NetworkResponse<T>(
     val sucess: SuccessResponseCallBack<T> = SuccessResponseCallBack(),
     val error: ErrorResponseCallBack = ErrorResponseCallBack()
 ) {
