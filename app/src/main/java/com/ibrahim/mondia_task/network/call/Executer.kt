@@ -1,16 +1,14 @@
-package com.ibrahim.mondia_task.data.repository
+package com.ibrahim.mondia_task.network.call
 
 import com.ibrahim.mondia_task.data.mapper.mapToType
 import com.ibrahim.mondia_task.data.model.NetworkResponseModel
-import java.io.IOException
+import com.ibrahim.mondia_task.network.response.NetworkResponse
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
-import kotlin.concurrent.thread
 
 
 class Executer<T: NetworkResponseModel>(

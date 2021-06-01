@@ -1,9 +1,6 @@
-package com.ibrahim.mondia_task
+package com.ibrahim.mondia_task.view
 
-import android.R.attr.src
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -11,14 +8,12 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ibrahim.mondia_task.R
 import com.ibrahim.mondia_task.data.model.Song
-import com.ibrahim.mondia_task.data.network.ImageLoader
 import com.ibrahim.mondia_task.view.SongsAdapter
+import com.ibrahim.mondia_task.viewmodel.SongsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_error_view.*
-import java.net.HttpURLConnection
-import java.net.URL
-import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.ibrahim.mondia_task
+package com.ibrahim.mondia_task.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.ibrahim.mondia_task.base.Universals
 import com.ibrahim.mondia_task.data.model.Song
 import com.ibrahim.mondia_task.data.model.SongsResponse
-import com.ibrahim.mondia_task.data.repository.NetworkResponse
+import com.ibrahim.mondia_task.network.response.NetworkResponse
 import com.ibrahim.mondia_task.data.repository.SongRepository
 import java.util.*
 
@@ -30,11 +30,17 @@ class SongsViewModel : ViewModel() {
             .registerCallBack(
                 onSuccess = {
                     Log.d("TAG", "response time = ${Calendar.getInstance().timeInMillis - callTime}")
-                    screenState.postValue(ForecastScreenState.SuccessAPIResponse(it))
+                    screenState.postValue(
+                        ForecastScreenState.SuccessAPIResponse(
+                            it
+                        )
+                    )
                 },
                 onFailure = {
                     screenState.postValue(
-                        ForecastScreenState.ErrorLoadingFromApi(it, { fetchSongsList(query) })
+                        ForecastScreenState.ErrorLoadingFromApi(
+                            it,
+                            { fetchSongsList(query) })
                     )
                 })
 
@@ -56,7 +62,9 @@ class SongsViewModel : ViewModel() {
 
     private fun handleLoginFailure(it: Exception) {
         screenState.postValue(
-            ForecastScreenState.ErrorLoadingFromApi(it, { getToken() })
+            ForecastScreenState.ErrorLoadingFromApi(
+                it,
+                { getToken() })
         )
     }
 

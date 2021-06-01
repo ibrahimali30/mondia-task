@@ -1,4 +1,4 @@
-package com.ibrahim.mondia_task.data.network
+package com.ibrahim.mondia_task.network
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
