@@ -1,46 +1,38 @@
 package com.ibrahim.mondia_task.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ibrahim.mondia_task.base.Global
 import com.ibrahim.mondia_task.data.model.Song
 import com.ibrahim.mondia_task.data.model.SongsResponse
+import com.ibrahim.mondia_task.data.model.TokenResponse
 import com.ibrahim.mondia_task.network.response.NetworkResponse
 import com.ibrahim.mondia_task.data.repository.SongRepository
-import java.util.*
 
 class SongsViewModel : ViewModel() {
 
     private var lastNetworkResponse: NetworkResponse<SongsResponse>? = null
 
-    val screenState by lazy { MutableLiveData<ForecastScreenState>() }
+    val screenState by lazy { MutableLiveData<SongsListScreenState>() }
 
 
     val songRepository = SongRepository()
 
     fun fetchSongsList(query: String) {
-        if (query.length < 2 )return
+        if (query.length < 2) return
         lastNetworkResponse?.cancel()
-        screenState.postValue(ForecastScreenState.Loading)
-
-        val callTime = Calendar.getInstance().timeInMillis
+        screenState.postValue(SongsListScreenState.Loading)
 
         songRepository.getSongsList(query).also { lastNetworkResponse = it }
             .registerCallBack(
                 onSuccess = {
-                    Log.d("TAG", "response time = ${Calendar.getInstance().timeInMillis - callTime}")
                     screenState.postValue(
-                        ForecastScreenState.SuccessAPIResponse(
-                            it
-                        )
+                        SongsListScreenState.SuccessAPIResponse(it)
                     )
                 },
                 onFailure = {
                     screenState.postValue(
-                        ForecastScreenState.ErrorLoadingFromApi(
-                            it,
-                            { fetchSongsList(query) })
+                        SongsListScreenState.ErrorLoadingFromApi(error = it, retry = { fetchSongsList(query) })
                     )
                 })
 
@@ -51,8 +43,7 @@ class SongsViewModel : ViewModel() {
         songRepository.getToken()
             .registerCallBack(
                 onSuccess = {
-                    Global.token = it.accessToken
-                    fetchSongsList("te")
+                    handleLoginSuccess(it)
                 },
                 onFailure = {
                     handleLoginFailure(it)
@@ -60,19 +51,21 @@ class SongsViewModel : ViewModel() {
             )
     }
 
+    private fun handleLoginSuccess(tokenResponse: TokenResponse) {
+        Global.token = tokenResponse.accessToken
+        fetchSongsList("te")
+        screenState.postValue(
+            SongsListScreenState.SuccessLogin()
+        )
+    }
+
     private fun handleLoginFailure(it: Exception) {
         screenState.postValue(
-            ForecastScreenState.ErrorLoadingFromApi(
-                it,
-                { getToken() })
+            SongsListScreenState.ErrorLoadingFromApi(error = it, retry = {getToken()})
         )
     }
 
 
-    sealed class ForecastScreenState {
-        object Loading : ForecastScreenState()
-        class ErrorLoadingFromApi(val error: Throwable, val retry: () -> Unit) : ForecastScreenState()
-        class SuccessAPIResponse(val data: List<Song>) : ForecastScreenState()
-    }
+
 
 }

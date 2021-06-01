@@ -20,7 +20,7 @@ class SongsAdapter(
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Song>() {
 
         override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
-            return oldItem.name == newItem.name
+            return oldItem.artistName == newItem.artistName
         }
         override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
             return oldItem == newItem
@@ -64,7 +64,9 @@ class SongsAdapter(
 
         fun bind(model: Song) {
             itemView.apply {
-                tvSongname.text = model.titel
+                tvArtistName.text = model.artistName
+                tvTitle.text = model.title
+                btGenre.text = model.genre
                 ImageLoader.loadImage(iv, model.getCoverPath())
             }
 

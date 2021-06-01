@@ -16,40 +16,69 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:scaleType="fitXY"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:minHeight="200dp"
             android:id="@+id/iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="200dp"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/gray"/>
+
+        <TextView
+            android:id="@+id/tvArtistName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:layout_marginHorizontal="32dp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp"
+            tools:text="Carlo ancheloti" />
 
         <LinearLayout
-            android:layout_marginHorizontal="8dp"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginHorizontal="8dp"
             android:textColor="#130E51"
             android:textSize="20sp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/iv"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toStartOf="parent">
+
 
             <TextView
-                android:id="@+id/tvSongname"
+                android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv"
-                tools:text="Cairo srg fdg d hfg hf" />
+                tools:text="Cairo srg fdg d hfg hf"
+                android:textColor="@color/black"
+                android:layout_marginTop="8dp"
+                android:maxLines="2"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btGenre"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/white"
+                tools:text="genre"
+                app:cornerRadius="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"/>
 
 
         </LinearLayout>
-
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

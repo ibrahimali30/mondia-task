@@ -1,10 +1,11 @@
 package com.ibrahim.mondia_task.data.model
 
 data class Song(
-    val titel: String = "",
-    val name: String = "",
+    val title: String = "",
+    val artistName: String = "",
     val albumName: String = "",
-    val cover: String = ""
+    val cover: String = "",
+    val genre: String = ""
 ){
     fun getCoverPath(): String {
         return when {

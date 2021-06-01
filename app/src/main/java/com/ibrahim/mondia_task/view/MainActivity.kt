@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ibrahim.mondia_task.R
 import com.ibrahim.mondia_task.data.model.Song
-import com.ibrahim.mondia_task.view.SongsAdapter
+import com.ibrahim.mondia_task.view.extensions.onTextChanged
+import com.ibrahim.mondia_task.viewmodel.SongsListScreenState
 import com.ibrahim.mondia_task.viewmodel.SongsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_error_view.*
@@ -18,42 +18,49 @@ import kotlinx.android.synthetic.main.layout_error_view.*
 
 class MainActivity : AppCompatActivity() {
 
-    val songsViewModel by lazy {
+
+    private val songsViewModel by lazy {
         ViewModelProvider(this).get(SongsViewModel::class.java)
     }
-    lateinit var adapter: SongsAdapter
+
+    private val songsAdapter: SongsAdapter by lazy {
+        SongsAdapter(::onAForecastItemClicked)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         observeScreenState()
-        initSearchView()
         initRecyclerView()
         songsViewModel.getToken()
+
     }
 
     private fun observeScreenState() {
-        songsViewModel.screenState.observe(this , Observer {
+        songsViewModel.screenState.observe(this, Observer {
             onScreenStateChanged(it)
         })
     }
 
-    private fun onScreenStateChanged(state: SongsViewModel.ForecastScreenState?) {
+    private fun onScreenStateChanged(state: SongsListScreenState?) {
         Log.d("TAG", "onScreenStateChanged: ${state.toString()}")
 
         when (state) {
-            is SongsViewModel.ForecastScreenState.SuccessAPIResponse -> handleSuccess(state.data)
-            is SongsViewModel.ForecastScreenState.ErrorLoadingFromApi -> handleErrorLoadingFromApi(state.error, state.retry)
+            is SongsListScreenState.SuccessAPIResponse -> handleSuccess(state.data)
+            is SongsListScreenState.SuccessLogin -> initSearchView()
+            is SongsListScreenState.ErrorLoadingFromApi -> {
+                handleErrorLoadingFromApi(state.error, state.retry)
+            }
             else -> {}
         }
 
-        handleLoadingVisibility(state == SongsViewModel.ForecastScreenState.Loading)
+        handleLoadingVisibility(state == SongsListScreenState.Loading)
         handleErrorViewsVisibility(state)
     }
 
-    private fun handleErrorViewsVisibility(state: SongsViewModel.ForecastScreenState?) {
-        if (state is SongsViewModel.ForecastScreenState.ErrorLoadingFromApi)
+    private fun handleErrorViewsVisibility(state: SongsListScreenState?) {
+        if (state is SongsListScreenState.ErrorLoadingFromApi)
             errorViewLayout.visibility = View.VISIBLE
         else
             errorViewLayout.visibility = View.GONE
@@ -65,12 +72,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleSuccess(data: List<Song>) {
-        if (data.isEmpty()){
+        if (data.isEmpty()) {
             tvNoSoredData.visibility = View.VISIBLE
-        }else{
+        } else {
             tvNoSoredData.visibility = View.INVISIBLE
         }
-        adapter.setList(data)
+        songsAdapter.setList(data)
     }
 
     private fun handleErrorLoadingFromApi(error: Throwable, retry: () -> Unit) {
@@ -80,10 +87,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        adapter = SongsAdapter(::onAForecastItemClicked)
-
-        rvForecast.layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
-        rvForecast.adapter = adapter
+        rvForecast.layoutManager = LinearLayoutManager(this)
+        rvForecast.adapter = songsAdapter
     }
 
     private fun onAForecastItemClicked(song: Song) {
@@ -92,20 +97,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun initSearchView() {
-
         searchView.isActivated = true
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                adapter.clear()
-                songsViewModel.fetchSongsList(searchView.query.toString())
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                songsViewModel.fetchSongsList(searchView.query.toString())
-                return false
-            }
-        })
+        searchView.isIconified = false
+        searchView.setIconifiedByDefault(false)
+        searchView.onTextChanged {
+            songsViewModel.fetchSongsList(searchView.query.toString())
+        }
     }
 }
+
