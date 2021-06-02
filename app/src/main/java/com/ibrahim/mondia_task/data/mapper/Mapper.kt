@@ -30,18 +30,25 @@ fun mapToSongs(it: String): SongsResponse {
             try {
                 val title = getString("title")
                 val name = getJSONObject("mainArtist").getString("name")
-                val album = getJSONObject("release").getString("title")
                 val cover = getJSONObject("cover").getString("medium")
+                val type = getString("type")
 
-                val genres = getJSONArray("genres")
-                val genre = if (genres.length() == 0){
-                    ""
+                var album = if (type == "song"){
+                    getJSONObject("release").getString("title")
                 }else{
-                    genres.get(0).toString()
+                    ""
                 }
 
-                songsList.add(Song(title, name, album, cover, genre))
-            }catch (e:Exception){}
+                val genre = try {
+                    getJSONArray("genres").get(0).toString()
+                }catch (e: Exception){
+                    ""
+                }
+
+                songsList.add(Song(title, name, album, cover, genre, type))
+            }catch (e:Exception){
+                e
+            }
 
         }
     }

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ibrahim.mondia_task.R
 import com.ibrahim.mondia_task.data.model.Song
 import com.ibrahim.mondia_task.network.ImageLoader
+import com.ibrahim.mondia_task.view.extensions.visible
 import kotlinx.android.synthetic.main.item_song.view.*
 
 class SongsAdapter(
@@ -66,7 +67,12 @@ class SongsAdapter(
             itemView.apply {
                 tvArtistName.text = model.artistName
                 tvTitle.text = model.title
-                btGenre.text = model.genre
+                tvType.text = model.type
+                if (model.genre.isNotEmpty()) {
+                    btGenre.visible()
+                    btGenre.text = model.genre
+                }
+
                 ImageLoader.loadImage(iv, model.getCoverPath())
             }
 

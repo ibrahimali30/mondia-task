@@ -19,63 +19,80 @@
             android:id="@+id/iv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/gray"
             android:minHeight="200dp"
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/gray"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvArtistName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center"
+            android:textColor="@color/white"
             android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/iv"
             app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center"
-            android:layout_marginHorizontal="32dp"
-            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            android:textStyle="bold"
-            android:layout_marginBottom="12dp"
             tools:text="Carlo ancheloti" />
+
+        <TextView
+            android:id="@+id/tvType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Song" />
+
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="8dp"
+            android:orientation="vertical"
             android:textColor="#130E51"
             android:textSize="20sp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/iv"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv">
 
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:maxLines="2"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv"
-                tools:text="Cairo srg fdg d hfg hf"
-                android:textColor="@color/black"
-                android:layout_marginTop="8dp"
-                android:maxLines="2"/>
+                android:layout_marginBottom="8dp"
+                tools:text="Cairo srg fdg d hfg hf" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btGenre"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="@color/white"
-                tools:text="genre"
-                app:cornerRadius="100dp"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="bottom"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/white"
+                app:cornerRadius="100dp"
+                tools:text="genre" />
 
 
         </LinearLayout>
