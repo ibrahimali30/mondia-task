@@ -13,7 +13,8 @@
         android:theme="@style/Theme.Mondiatask"
         android:usesCleartextTraffic="true">
         <activity android:name=".view.activity.SongDetailsActivity" />
-        <activity android:name=".view.activity.SongsSearchActivity">
+        <activity android:name=".view.activity.SongsSearchActivity"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

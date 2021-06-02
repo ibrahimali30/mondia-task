@@ -20,7 +20,9 @@ object ImageLoader {
                 startDownloadingImage(imageView, url)
             }
             ImageStatus.DownloadStatus.DOWNLOADED ->{
-                imageView.setImageBitmap(imageStatus.bitmap)
+                imageView.post {
+                    imageView.setImageBitmap(imageStatus.bitmap)
+                }
             }
             //todo show loading progress
             ImageStatus.DownloadStatus.DOWNLOADED ->{}

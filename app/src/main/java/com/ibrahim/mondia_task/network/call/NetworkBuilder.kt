@@ -38,7 +38,7 @@ class NetworkBuilder<T>{
     }
 
 
-    fun build(mapper: (data: String) -> T): NetworkCaller<T> {
+    fun build(mapper: (json: String) -> T): NetworkCaller<T> {
         buildUrl()
         urlConnection = url.openConnection() as HttpURLConnection
         urlConnection.requestMethod = method
