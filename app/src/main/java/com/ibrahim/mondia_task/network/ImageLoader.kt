@@ -9,44 +9,25 @@ import kotlin.concurrent.thread
 
 object ImageLoader {
 
-    val downloadList = mutableListOf<ImageStatus>()
+    private val downloadList = mutableListOf<ImageStatus>()
 
-    data class ImageStatus(
-        val url: String,
-        var bitmap: Bitmap? = null,
-        var status: DownloadStatus = DownloadStatus.LOADING
-    ){
-        fun setDownloaded(v: Bitmap) {
-            status = DownloadStatus.DOWNLOADED
-            bitmap = v
-        }
-
-
-        enum class DownloadStatus{
-            LOADING,
-            DOWNLOADED
-        }
-    }
-
-    fun loadImage(testimage: ImageView, url: String){
+    fun loadImage(imageView: ImageView, url: String){
         val imageStatus = getImageStatus(url)
-        when (imageStatus?.status){
-            ImageStatus.DownloadStatus.LOADING ->{
-                downloadList.add(ImageStatus(url))
-                startDownloadingImage(testimage, url)
+        when (imageStatus.status){
+            //if NONE add to downloadList start Downloading Image
+            ImageStatus.DownloadStatus.NONE ->{
+                imageStatus.setLoading()
+                startDownloadingImage(imageView, url)
             }
             ImageStatus.DownloadStatus.DOWNLOADED ->{
-                testimage.post {
-                    testimage.setImageBitmap(imageStatus.bitmap)
-                }
+                imageView.setImageBitmap(imageStatus.bitmap)
             }
-
+            //todo show loading progress
+            ImageStatus.DownloadStatus.DOWNLOADED ->{}
         }
-
     }
 
-    private fun startDownloadingImage(testimage: ImageView, imageUrl: String) {
-
+    private fun startDownloadingImage(imageView: ImageView, imageUrl: String) {
         thread {
             try {
                 val url = URL(imageUrl)
@@ -55,11 +36,15 @@ object ImageLoader {
                 connection.doInput = true
                 connection.connect()
                 val input = connection.inputStream
-                val v = BitmapFactory.decodeStream(input)
-                getImageStatus(imageUrl)?.setDownloaded(v)
-                loadImage(testimage, imageUrl)
+                val bitmap = BitmapFactory.decodeStream(input)
+
+                //set status to DownloadStatus.DOWNLOADED and set image bitmap
+                getImageStatus(imageUrl).setDownloaded(bitmap)
+                loadImage(imageView, imageUrl)
+
             } catch (e: Exception) {
                 e.printStackTrace()
+                getImageStatus(imageUrl).status = ImageStatus.DownloadStatus.NONE
             } finally {
 //            urlConnection?.disconnect()
             }
@@ -67,7 +52,31 @@ object ImageLoader {
     }
 
     private fun getImageStatus(imageUrl: String): ImageStatus {
-        return downloadList.find { it.url == imageUrl }?: ImageStatus(imageUrl)
+        return downloadList.find { it.url == imageUrl }
+            //if not included in downloadList add new one with LOADING status
+            ?: ImageStatus(imageUrl, null, ImageStatus.DownloadStatus.NONE)
     }
 
+
+    data class ImageStatus(
+        val url: String,
+        var bitmap: Bitmap? = null,
+        var status: DownloadStatus = DownloadStatus.NONE
+    ) {
+        fun setDownloaded(v: Bitmap) {
+            status = DownloadStatus.DOWNLOADED
+            bitmap = v
+        }
+
+        fun setLoading() {
+            status = DownloadStatus.LOADING
+            downloadList.add(this)
+        }
+
+        enum class DownloadStatus {
+            NONE,
+            LOADING,
+            DOWNLOADED
+        }
+    }
 }

@@ -12,18 +12,31 @@ class SongRepository {
 
     fun getSongsList(query: String): NetworkResponse<SongsResponse> {
         val builder = NetworkBuilder<SongsResponse>()
-            .addHeader("Authorization", "Bearer ${Global.token}")
+            .addHeader(Global.token_header_key, Global.token)
             .addQueryParams("query", query)
             .setPath("v2/api/sayt/flat")
             .setMethod("GET")
 
-        return builder.build(::mapToSongs).callNetwork()
+        val networkResponse = builder.build(::mapToSongs).callNetwork()
+        /** no reason for this registration
+         * it is just to show that it can handle multiple subscribers
+         * in cast extra operations is needed
+         * **/
+        networkResponse.registerCallBack(
+            onSuccess = {
+                it.size
+            }, onFailure = {
+                it.message
+            })
+
+
+        return networkResponse
     }
 
     fun getToken(): NetworkResponse<TokenResponse> {
 
         val builder = NetworkBuilder<TokenResponse>()
-            .addHeader("X-MM-GATEWAY-KEY","Ge6c853cf-5593-a196-efdb-e3fd7b881eca")
+            .addHeader(Global.gateway_header_key, Global.gateway_header_value)
             .setPath("v0/api/gateway/token/client")
             .setMethod("POST")
 

@@ -7,6 +7,9 @@ import java.net.URL
 
 class NetworkBuilder<T>{
 
+    /**
+     * Builder pattern is used to handle building this complex object
+     * **/
     lateinit var url: URL
     lateinit var urlConnection: HttpURLConnection
 
@@ -24,7 +27,8 @@ class NetworkBuilder<T>{
     fun baseUrl(model: String) = apply { this.baseUrl = baseUrl }
 
     private fun buildUrl() {
-        var requestUrl = baseUrl+path
+        //append path and query params
+        val requestUrl = baseUrl+path
         val uri = Uri.Builder()
             .encodedPath(requestUrl)
         queryParams.forEach {
@@ -38,12 +42,12 @@ class NetworkBuilder<T>{
         buildUrl()
         urlConnection = url.openConnection() as HttpURLConnection
         urlConnection.requestMethod = method
-
+        //add request headers
         headers.forEach {
             urlConnection!!.addRequestProperty(it.key, it.value)
         }
 
-        return NetworkCaller(urlConnection!!, mapper)
+        return NetworkCaller(urlConnection, mapper)
     }
 
 

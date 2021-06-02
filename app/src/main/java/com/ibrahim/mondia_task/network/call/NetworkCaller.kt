@@ -14,6 +14,13 @@ class NetworkCaller<T>(
      private val mapper: (data: String) -> T
 ) {
 
+    /**
+     * @param urlConnection contains all the headers and query params
+     * that was handled from th @NetworkBuild
+     * @param mapper is a function that transform the json string to the generic type
+     * is passed upon building the @NetworkCaller<T> from repo
+     */
+
     fun callNetwork(): NetworkResponse<T> {
         val responseCallBack = NetworkResponse<T>()
         val service = Executors.newCachedThreadPool()
@@ -24,17 +31,18 @@ class NetworkCaller<T>(
                 val isw = InputStreamReader(`in`)
                 val data = isw.readText()
 
-                responseCallBack.sucess.invoke(mapper(data))
+                responseCallBack.successResponse.invoke(mapper(data))
 
             }catch (e: Exception) {
                 if (e.message != "thread interrupted")
-                responseCallBack.error.invoke(e)
+                responseCallBack.errorResponse.invoke(e)
             } finally {
                 urlConnection?.disconnect()
             }
 
         }
 
+        //cancel network upon request
         responseCallBack.cancelCall = {
             future.cancel(true)
         }

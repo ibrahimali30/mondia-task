@@ -8,5 +8,5 @@ sealed class SongsListScreenState {
         SongsListScreenState()
 
     class SuccessAPIResponse(val data: List<Song>) : SongsListScreenState()
-    class SuccessLogin() : SongsListScreenState()
+    object SuccessLogin : SongsListScreenState()
 }

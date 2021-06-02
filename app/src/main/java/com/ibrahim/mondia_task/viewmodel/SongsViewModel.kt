@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import com.ibrahim.mondia_task.base.Global
 import com.ibrahim.mondia_task.data.model.SongsResponse
 import com.ibrahim.mondia_task.data.model.TokenResponse
-import com.ibrahim.mondia_task.network.response.NetworkResponse
 import com.ibrahim.mondia_task.data.repository.SongRepository
+import com.ibrahim.mondia_task.network.response.NetworkResponse
 
 class SongsViewModel : ViewModel() {
 
@@ -19,7 +19,7 @@ class SongsViewModel : ViewModel() {
 
     fun fetchSongsList(query: String) {
         if (query.length < 2) return
-        lastNetworkResponse?.cancelNetworkCall()
+        lastNetworkResponse?.cancelNetworkCall() //dispose the fired call
         setLoading()
 
         songRepository.getSongsList(query).also { lastNetworkResponse = it }
@@ -58,9 +58,8 @@ class SongsViewModel : ViewModel() {
 
     private fun handleLoginSuccess(tokenResponse: TokenResponse) {
         Global.token = tokenResponse.accessToken
-        fetchSongsList("te")
         screenState.postValue(
-            SongsListScreenState.SuccessLogin()
+            SongsListScreenState.SuccessLogin
         )
     }
 
@@ -69,8 +68,5 @@ class SongsViewModel : ViewModel() {
             SongsListScreenState.ErrorLoadingFromApi(error = it, retry = {getToken()})
         )
     }
-
-
-
 
 }

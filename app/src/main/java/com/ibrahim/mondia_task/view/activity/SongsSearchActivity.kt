@@ -1,4 +1,4 @@
-package com.ibrahim.mondia_task.view
+package com.ibrahim.mondia_task.view.activity
 
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ibrahim.mondia_task.R
 import com.ibrahim.mondia_task.data.model.Song
+import com.ibrahim.mondia_task.view.adapter.SongsAdapter
 import com.ibrahim.mondia_task.view.extensions.onTextChanged
 import com.ibrahim.mondia_task.viewmodel.SongsListScreenState
 import com.ibrahim.mondia_task.viewmodel.SongsViewModel
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_error_view.*
 
 
-class MainActivity : AppCompatActivity() {
+class SongsSearchActivity : AppCompatActivity() {
 
 
     private val songsViewModel by lazy {
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val songsAdapter: SongsAdapter by lazy {
-        SongsAdapter(::onAForecastItemClicked)
+        SongsAdapter(::onSongItemClicked)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,17 +84,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleErrorLoadingFromApi(error: Throwable, retry: () -> Unit) {
+        songsAdapter.clear()
         btRetry.setOnClickListener {
             retry()
         }
     }
 
     private fun initRecyclerView() {
-        rvForecast.layoutManager = LinearLayoutManager(this)
-        rvForecast.adapter = songsAdapter
+        rvSong.layoutManager = LinearLayoutManager(this)
+        rvSong.adapter = songsAdapter
     }
 
-    private fun onAForecastItemClicked(song: Song, iv: ImageView, tv: TextView) {
+    private fun onSongItemClicked(song: Song, iv: ImageView, tv: TextView) {
         SongDetailsActivity.startCallingIntent(song, this, iv, tv)
     }
 

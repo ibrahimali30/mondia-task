@@ -1,12 +1,12 @@
-package com.ibrahim.mondia_task.view
+package com.ibrahim.mondia_task.view.activity
 
 import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Pair
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.ibrahim.mondia_task.R
 import com.ibrahim.mondia_task.data.model.Song
 import com.ibrahim.mondia_task.network.ImageLoader

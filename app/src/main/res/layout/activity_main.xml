@@ -6,68 +6,68 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/bg"
-    tools:context=".view.MainActivity">
+    tools:context=".view.activity.SongsSearchActivity">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+
+    </androidx.core.widget.NestedScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="32dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="32dp">
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/black"
+            app:strokeWidth="1dp"
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardView"
+            >
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:strokeColor="@color/black"
-                app:strokeWidth="1dp"
+                android:layout_height="40dp"
+                android:inputType="text"
+                app:defaultQueryHint="Song Name"
+                app:queryHint="Song Name" />
 
-                >
-
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:inputType="text"
-                    app:defaultQueryHint="Song Name"
-                    app:queryHint="Song Name" />
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_marginEnd="50dp"
-                    android:layout_gravity="end|center"
-                    android:visibility="gone"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvForecast"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_marginEnd="50dp"
+                android:layout_gravity="end|center"
+                android:visibility="gone"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    </androidx.core.widget.NestedScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSong"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    </LinearLayout>
 
 
     <TextView

@@ -12,8 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mondiatask"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.SongDetailsActivity"></activity>
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.activity.SongDetailsActivity" />
+        <activity android:name=".view.activity.SongsSearchActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

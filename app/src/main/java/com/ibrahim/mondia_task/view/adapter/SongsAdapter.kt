@@ -1,4 +1,4 @@
-package com.ibrahim.mondia_task.view
+package com.ibrahim.mondia_task.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +15,12 @@ import com.ibrahim.mondia_task.view.extensions.visible
 import kotlinx.android.synthetic.main.item_song.view.*
 
 class SongsAdapter(
-        val onAForecastItemClicked: (model: Song, imageView: ImageView, tv: TextView) -> Unit
+    private val onSongItemClicked: (model: Song, imageView: ImageView, tv: TextView) -> Unit
 ) :
     RecyclerView.Adapter<SongsAdapter.ViewHolder>() {
 
-    val commitCallback = Runnable {}
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Song>() {
+    private val commitCallback = Runnable {}
+    private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Song>() {
 
         override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
             return oldItem.artistName == newItem.artistName
@@ -47,20 +47,22 @@ class SongsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val forecastUiModel = differ.currentList[position]
-        holder.bind(forecastUiModel)
+        val songUiModel = differ.currentList[position]
+        holder.bind(songUiModel)
 
         holder.itemView.setOnClickListener {
-            onAForecastItemClicked.invoke(forecastUiModel, holder.itemView.ivPoster, holder.itemView.tvArtistName)
+            onSongItemClicked.invoke(songUiModel, holder.itemView.ivPoster, holder.itemView.tvArtistName)
         }
     }
 
     fun setList(list: List<Song>) {
         differ.submitList(list, commitCallback)
+        notifyDataSetChanged()
     }
 
     fun clear() {
         differ.submitList(listOf(), commitCallback)
+        notifyDataSetChanged()
     }
 
     class ViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
