@@ -3,6 +3,8 @@ package com.ibrahim.mondia_task.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +15,7 @@ import com.ibrahim.mondia_task.view.extensions.visible
 import kotlinx.android.synthetic.main.item_song.view.*
 
 class SongsAdapter(
-        val onAForecastItemClicked: (model: Song) -> Unit
+        val onAForecastItemClicked: (model: Song, imageView: ImageView, tv: TextView) -> Unit
 ) :
     RecyclerView.Adapter<SongsAdapter.ViewHolder>() {
 
@@ -49,7 +51,7 @@ class SongsAdapter(
         holder.bind(forecastUiModel)
 
         holder.itemView.setOnClickListener {
-            onAForecastItemClicked.invoke(forecastUiModel)
+            onAForecastItemClicked.invoke(forecastUiModel, holder.itemView.ivPoster, holder.itemView.tvArtistName)
         }
     }
 
@@ -67,13 +69,14 @@ class SongsAdapter(
             itemView.apply {
                 tvArtistName.text = model.artistName
                 tvTitle.text = model.title
+                tvAlbumName.text = model.albumName
                 tvType.text = model.type
                 if (model.genre.isNotEmpty()) {
                     btGenre.visible()
                     btGenre.text = model.genre
                 }
 
-                ImageLoader.loadImage(iv, model.getCoverPath())
+                ImageLoader.loadImage(ivPoster, model.getCoverPath())
             }
 
         }

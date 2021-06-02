@@ -1,6 +1,7 @@
 package com.ibrahim.mondia_task.data.model
 
 import org.json.JSONObject
+import java.io.Serializable
 
 data class Song(
     val title: String = "",
@@ -9,7 +10,7 @@ data class Song(
     val cover: String = "",
     val genre: String = "",
     val type: String
-){
+): Serializable{
     fun getCoverPath(): String {
         return when {
             cover.startsWith("//") -> cover.replaceFirst("//","http://")

@@ -3,6 +3,8 @@ package com.ibrahim.mondia_task.view
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -91,8 +93,8 @@ class MainActivity : AppCompatActivity() {
         rvForecast.adapter = songsAdapter
     }
 
-    private fun onAForecastItemClicked(song: Song) {
-
+    private fun onAForecastItemClicked(song: Song, iv: ImageView, tv: TextView) {
+        SongDetailsActivity.startCallingIntent(song, this, iv, tv)
     }
 
 

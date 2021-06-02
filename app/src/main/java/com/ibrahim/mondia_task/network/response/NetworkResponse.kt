@@ -14,7 +14,7 @@ data class NetworkResponse<T>(
         error.register(onFailure)
     }
 
-    fun cancel() {
+    fun cancelNetworkCall() {
         cancelCall()
     }
 

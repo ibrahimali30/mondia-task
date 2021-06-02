@@ -3,7 +3,6 @@ package com.ibrahim.mondia_task.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ibrahim.mondia_task.base.Global
-import com.ibrahim.mondia_task.data.model.Song
 import com.ibrahim.mondia_task.data.model.SongsResponse
 import com.ibrahim.mondia_task.data.model.TokenResponse
 import com.ibrahim.mondia_task.network.response.NetworkResponse
@@ -20,8 +19,8 @@ class SongsViewModel : ViewModel() {
 
     fun fetchSongsList(query: String) {
         if (query.length < 2) return
-        lastNetworkResponse?.cancel()
-        screenState.postValue(SongsListScreenState.Loading)
+        lastNetworkResponse?.cancelNetworkCall()
+        setLoading()
 
         songRepository.getSongsList(query).also { lastNetworkResponse = it }
             .registerCallBack(
@@ -40,6 +39,8 @@ class SongsViewModel : ViewModel() {
 
 
     fun getToken() {
+        setLoading()
+
         songRepository.getToken()
             .registerCallBack(
                 onSuccess = {
@@ -49,6 +50,10 @@ class SongsViewModel : ViewModel() {
                     handleLoginFailure(it)
                 }
             )
+    }
+
+    private fun setLoading() {
+        screenState.postValue(SongsListScreenState.Loading)
     }
 
     private fun handleLoginSuccess(tokenResponse: TokenResponse) {
